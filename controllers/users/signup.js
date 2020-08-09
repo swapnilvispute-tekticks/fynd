@@ -4,14 +4,19 @@ module.exports.main = async (req, res) => {
   try {
     let reqBody = req.body
     await verifyReq(reqBody)
-    const MoviesModel = require('../../models/movies')
-    reqBody.slug = _.kebabCase(reqBody.name)
-    let isExist = await MoviesModel.findOne({ slug: reqBody.slug })
+    const UsersModel = require('./../../models/users')
+    let isExist = await UsersModel.findOne({ email: reqBody.email })
+    console.log('\n\n isExist', isExist)
     if (_.isEmpty(isExist)) {
-      let data = await MoviesModel.create(reqBody)
-      return res.status(200).send({ status: 200, message: 'Movie created successfully', data: data })
+      let bcrypt = require('bcryptjs')
+      let salt = bcrypt.genSaltSync(10)
+      var hash = bcrypt.hashSync(reqBody.password, salt)
+      reqBody.role = 'user'
+      reqBody.password = hash
+      let data = await UsersModel.create(reqBody)
+      return res.status(200).send({ status: 200, message: 'User registered successfully', data: data })
     } else {
-      return res.status(200).send({ status: 400, message: 'Movie already exist with the same name', data: {} })
+      return res.status(200).send({ status: 400, message: 'User already exist with the same email', data: {} })
     }
   } catch (err) {
     console.log('catch ==>', err)
@@ -22,11 +27,9 @@ module.exports.main = async (req, res) => {
 const verifyReq = (reqBody) => {
   const Joi = require('joi')
   const schema = Joi.object({
-    '99popularity': Joi.number().required(),
-    director: Joi.string().required(),
-    genre: Joi.array().required(),
-    imdb_score: Joi.number().required(),
-    name: Joi.string().required()
+    name: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
   })
 
   const validated = schema.validate(reqBody, { abortEarly: false })

@@ -8,13 +8,13 @@ module.exports.main = async (req, res) => {
     const MoviesModel = require('../../models/movies')
     reqBody.slug = _.kebabCase(reqBody.name)
     let isExist = await MoviesModel.find({ $or: [{ slug: reqBody.slug }, { _id: params.id }] })
-    if (!_.isEmpty(isExist)) {
-      console.log('\n isExist', isExist)
-      //let data = await MoviesModel.create(reqBody)
-      console.log('\n\n data', data)
-      return res.status(200).send({ status: 200, message: 'Movie created successfully', data: isExist })
+    if (isExist && isExist.length === 1) {
+      let data = await MoviesModel.updateOne({ _id: params.id }, reqBody)
+      return res.status(200).send({ status: 200, message: 'Movie updated successfully', data: data })
+    } else if (isExist.length > 1) {
+      return res.status(200).send({ status: 400, message: 'Movie already exist with the same name', data: isExist })
     } else {
-      return res.status(200).send({ status: 200, message: 'Movie already exist with the same name', data: {} })
+      return res.status(200).send({ status: 400, message: 'Movie doesnt exist', data: {} })
     }
   } catch (err) {
     console.log('catch ==>', err)

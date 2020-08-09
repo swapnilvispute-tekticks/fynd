@@ -8,7 +8,7 @@ module.exports.main = async (req, res) => {
     if (!_.isEmpty(data)) {
       return res.status(200).send({ status: 200, message: 'Data fetched successfully', data: data })
     } else {
-      return res.status(200).send({ status: 200, message: 'No details found', data: {} })
+      return res.status(200).send({ status: 400, message: 'No details found', data: {} })
     }
   } catch (err) {
     console.log('catch ==>', err)

@@ -33,7 +33,13 @@ mongoose.Promise = global.Promise
 mongoose.connect(dbConfig.url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Successfully connected to the database')
-  }).catch(err => {
+    const createAdmin = require('./controllers/users/createAdminUser')
+    return createAdmin.main()
+  })
+  .then((result) => {
+    console.log('result', result)
+  })
+  .catch(err => {
     console.log('Could not connect to the database. Exiting now...')
     process.exit()
   })
