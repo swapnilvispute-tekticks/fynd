@@ -6,13 +6,10 @@ module.exports.main = async (req, res) => {
     let params = req.params
     await verifyReq(reqBody)
     const MoviesModel = require('../../models/movies')
-    reqBody.slug = _.kebabCase(reqBody.name)
-    let isExist = await MoviesModel.find({ $or: [{ slug: reqBody.slug }, { _id: params.id }] })
-    if (isExist && isExist.length === 1) {
+    let isExist = await MoviesModel.find({ _id: params.id })
+    if (isExist && isExist.length > 0) {
       let data = await MoviesModel.updateOne({ _id: params.id }, reqBody)
       return res.status(200).send({ status: 200, message: 'Movie updated successfully', data: data })
-    } else if (isExist.length > 1) {
-      return res.status(200).send({ status: 400, message: 'Movie already exist with the same name', data: isExist })
     } else {
       return res.status(200).send({ status: 400, message: 'Movie doesnt exist', data: {} })
     }
@@ -28,8 +25,7 @@ const verifyReq = (reqBody) => {
     '99popularity': Joi.number().required(),
     director: Joi.string().required(),
     genre: Joi.array().required(),
-    imdb_score: Joi.number().required(),
-    name: Joi.string().required()
+    imdb_score: Joi.number().required()
   })
 
   const validated = schema.validate(reqBody, { abortEarly: false })
