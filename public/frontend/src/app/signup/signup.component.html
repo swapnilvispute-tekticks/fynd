@@ -29,7 +29,7 @@
 
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" [required]="true" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="email" class="form-control" [className]="(1===11) ? 'form-control border-danger' : 'form-control'" id="exampleInputEmail1" aria-describedby="emailHelp" [email]="true" #emailId="ngModel" >
+            <input type="email" [required]="true" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="email" class="form-control"  id="exampleInputEmail1" aria-describedby="emailHelp" [email]="true" #emailId="ngModel" >
           </div>
           <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="alert alert-danger">Entered email address is invalid</div>
           <div class="form-group">

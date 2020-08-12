@@ -45,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let movie of movies; index as i; trackBy: trackByFn" role="alert">
+      <tr *ngFor="let movie of movies; index as i;" role="alert">
         <td>
           <a [routerLink]="['../../','movies','edit',movie.slug]" type="button" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
         <td><button class="btn btn-sm btn-danger" (click)="deletMovie(movie._id)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>

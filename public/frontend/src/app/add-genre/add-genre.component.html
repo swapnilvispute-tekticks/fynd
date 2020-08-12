@@ -58,7 +58,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let gen of genre; index as i; trackBy: trackByFn" role="alert">
+      <tr *ngFor="let gen of genre; index as i;" role="alert">
         <td>{{ gen.name }}</td>
         <td>{{ formatDate(gen.updatedAt, 'DD-MM-YYYY HH:mm:ss') }}</td>
         <td>{{ gen.updated_by }}</td>

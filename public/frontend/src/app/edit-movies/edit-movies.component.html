@@ -59,7 +59,7 @@
       <div class="form-group">
         <label for="exampleInputEmail1">Genre</label>
         <select name="genreSelected" [(ngModel)]="genreSelected" class="custom-select" required #genSelected = "ngModel" multiple>
-          <option *ngFor="let item of genre; index as i; trackBy: trackByFn" value="{{ item.name }}" selected="(genreSelected.indexOf(item.name) > -1) ? 'selected': ''" >{{ item.name }}</option>
+          <option *ngFor="let item of genre; index as i;" value="{{ item.name }}" selected="(genreSelected.indexOf(item.name) > -1) ? 'selected': ''" >{{ item.name }}</option>
         </select>
       </div>
       <div *ngIf="genSelected.invalid && (genSelected.dirty || genSelected.touched)" class="alert alert-danger">At least one genre should be selected</div>

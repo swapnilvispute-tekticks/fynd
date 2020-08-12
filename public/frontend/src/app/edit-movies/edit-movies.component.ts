@@ -15,6 +15,7 @@ export class EditMoviesComponent implements OnInit {
   genreSelected: string[]
   imdb_score: string
   name: string
+  successMsg: string = ""
   details: any = {}
   errData: string[] = []
   constructor(private authenticationService: AuthenticationService,private router: Router,private moviesService: MoviesService, private route: ActivatedRoute) { }
