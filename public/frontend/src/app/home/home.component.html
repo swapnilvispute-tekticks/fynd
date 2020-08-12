@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Fynd</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" name="search" type="text" [(ngModel)]="searchText" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchBy()">Search</button>
+        </form>
+      </li>
+
+      <li style="margin-left: 20px;" class="nav-item">      
+        <div class="btn-group">
+          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter By
+          </button>
+          <div class="dropdown-menu">
+            <span class="dropdown-item" (click)="filterBy('popularity')">Popularity</span>
+            <span class="dropdown-item" (click)="filterBy('director')">Director Name</span>
+            <span class="dropdown-item" (click)="filterBy('movie')">Movie Name</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item" routerLink="/login" *ngIf="!isLoggedIn">
+        <a class="nav-link disabled" tabindex="-1" aria-disabled="true">Login</a>
+      </li>
+      <li class="nav-item" (click)="logout()" style="cursor: pointer;" *ngIf="isLoggedIn">
+        <a class="nav-link disabled" tabindex="-1" aria-disabled="true">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <br>
+  <div style="cursor: pointer;" *ngIf="genre.length > 0">
+    <span *ngFor="let genr of genre">
+      <span (click)="selectGenre(genr.name)" *ngIf="selectedGenre.indexOf(genr.name) > -1" style="margin-left: 5px;"  class="badge badge-pill badge-primary">{{ genr.name }}</span>
+      <span (click)="selectGenre(genr.name)" *ngIf="selectedGenre.indexOf(genr.name) === -1" style="margin-left: 5px;"  class="badge badge-pill badge-info">{{ genr.name }}</span>
+    </span>   
+  </div>
+  <br>
+  <div class="row row-cols-1 row-cols-md-3">
+    <div class="col mb-4" *ngFor="let movie of movies; index as i; trackBy: trackByFn">
+      <div class="card h-100">
+        <img src="assets/wallpaper.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <p class="card-text"><i class="fa fa-star" aria-hidden="true"></i> {{ movie.imdb_score }}</p>
+          <h5 class="card-title">{{ movie.name }}</h5>
+          <p><b>Directed By</b> {{ movie.director }}</p>
+          <p><b>Poularity</b> {{ movie['99popularity'] }}</p>
+          <p><span style="margin-left: 5px;" *ngFor="let genre of movie.genre" class="badge badge-pill badge-primary">{{ genre }}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

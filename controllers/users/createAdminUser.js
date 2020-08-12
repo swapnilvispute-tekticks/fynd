@@ -12,7 +12,7 @@ module.exports.main = async () => {
     if (_.isEmpty(isExist)) {
       const bcrypt = require('bcryptjs')
       const salt = bcrypt.genSaltSync(10)
-      var hash = bcrypt.hashSync('admin', salt)
+      var hash = bcrypt.hashSync('123456', salt)
       reqBody.role = 'admin'
       reqBody.password = hash
       const data = await UsersModel.create(reqBody)

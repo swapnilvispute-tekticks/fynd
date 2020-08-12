@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Fynd</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">Home</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="nav-item">
+        <a class="nav-link"  routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/movies/list">Movies List</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/movies/add">Add Movies</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item active">
+        <a class="nav-link" routerLink="/genre/add">Add Genre</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/signup">Signup</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="row">
+  <div class="offset-md-3 col-md-6">
+    <form #loginForm="ngForm" method="post" (ngSubmit)="onSubmit($event)">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Genre</label>
+        <input type="text" [required]="true" name="genreName" minlength="1" [(ngModel)]="genreName" class="form-control" #genName="ngModel" >
+      </div>
+      <div *ngIf="genName.invalid && (genName.dirty || genName.touched)" class="alert alert-danger">Entered genre is invalid</div>
+      <button type="submit" [disabled]="genName.invalid" class="btn btn-sm btn-primary">Submit</button>
+      <br><br>
+      <div *ngIf="errData && errData.length > 0">
+        <div *ngFor="let item of errData; index as i; trackBy: trackByFn" class="alert alert-danger" role="alert">
+          {{ item }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Genre Name</th>
+        <th scope="col">Modified At</th>
+        <th scope="col">Modified By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gen of genre; index as i; trackBy: trackByFn" role="alert">
+        <td>{{ gen.name }}</td>
+        <td>{{ formatDate(gen.updatedAt, 'DD-MM-YYYY HH:mm:ss') }}</td>
+        <td>{{ gen.updated_by }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

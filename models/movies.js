@@ -6,7 +6,8 @@ const MovieSchema = mongoose.Schema({
   genre: { type: [String], required: true },
   imdb_score: { type: String, required: true },
   name: { type: String, required: true },
-  slug: { type: String, required: true }
+  slug: { type: String, required: true },
+  updated_by: { type: String, required: true }
 }, {
   timestamps: true
 })

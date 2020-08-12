@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Fynd</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">Home</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item ">
+        <a class="nav-link" routerLink="/movies/list">Movies List</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item active">
+        <a class="nav-link" routerLink="/movies/add">Add Movies</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/genre/add">Add Genre</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/signup">Signup</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="row" style="padding-top: 20px;">
+  <div class="offset-md-3 col-md-6">
+    <form #addMovieForm="ngForm" method="post" (ngSubmit)="onSubmit($event)">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Movie Name</label>
+        <input type="text" [required]="true" name="name" minlength="1" [(ngModel)]="name" class="form-control" #movieName="ngModel" >
+      </div>
+      <div *ngIf="movieName.invalid && (movieName.dirty || movieName.touched)" class="alert alert-danger">Movie Name is required</div>
+
+      <div class="form-group">
+        <label for="exampleInputEmail1">99popularity</label>
+        <input type="text" [required]="true" pattern="[+-]?([0-9]*[.])?[0-9]+" name="popularity" minlength="1" [(ngModel)]="popularity" class="form-control" #pop="ngModel" >
+      </div>
+      <div *ngIf="pop.invalid && (pop.dirty || pop.touched)" class="alert alert-danger">99popularity should be a valid no</div>
+
+      <div class="form-group">
+        <label for="exampleInputEmail1">Director</label>
+        <input type="text" [required]="true" name="director" minlength="1" [(ngModel)]="director" class="form-control" #directorName="ngModel" >
+      </div>
+      <div *ngIf="directorName.invalid && (directorName.dirty || directorName.touched)" class="alert alert-danger">Director is required</div>
+      
+      <div class="form-group">
+        <label for="exampleInputEmail1">IMDB Score</label>
+        <input type="text" [required]="true" pattern="[+-]?([0-9]*[.])?[0-9]+" name="imdb_score" minlength="1" [(ngModel)]="imdb_score" class="form-control" #imdbScore="ngModel" >
+      </div>
+      <div *ngIf="imdbScore.invalid && (imdbScore.dirty || imdbScore.touched)" class="alert alert-danger"> should be a valid no</div>
+
+      <div class="form-group">
+        <label for="exampleInputEmail1">Genre</label>
+        <select name="genreSelected" [(ngModel)]="genreSelected" class="custom-select" required #genSelected = "ngModel" multiple>
+          <option *ngFor="let item of genre; index as i; trackBy: trackByFn" value="{{ item.name }}">{{ item.name }}</option>
+        </select>
+      </div>
+      <div *ngIf="genSelected.invalid && (genSelected.dirty || genSelected.touched)" class="alert alert-danger">At least one genre should be selected</div>
+
+      <button type="submit" [disabled]="addMovieForm.invalid" class="btn btn-sm btn-primary">Submit</button>
+      <br><br>
+      <div *ngIf="successMsg && successMsg !== ''">
+        <div class="alert alert-danger" role="alert">{{ successMsg }}</div>
+      </div>
+      <div *ngIf="errData && errData.length > 0">
+        <div *ngFor="let item of errData; index as i; trackBy: trackByFn" class="alert alert-danger" role="alert">
+          {{ item }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

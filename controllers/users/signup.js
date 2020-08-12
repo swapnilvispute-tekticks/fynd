@@ -11,7 +11,6 @@ module.exports.main = async (req, res) => {
       let bcrypt = require('bcryptjs')
       let salt = bcrypt.genSaltSync(10)
       var hash = bcrypt.hashSync(reqBody.password, salt)
-      reqBody.role = 'user'
       reqBody.password = hash
       let data = await UsersModel.create(reqBody)
       return res.status(200).send({ status: 200, message: 'User registered successfully', data: data })
@@ -29,7 +28,8 @@ const verifyReq = (reqBody) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required()
+    password: Joi.string().required(),
+    role: Joi.string().valid('admin', 'user')
   })
 
   const validated = schema.validate(reqBody, { abortEarly: false })

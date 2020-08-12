@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Fynd</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li *ngIf="!isLoggedIn" class="nav-item">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="nav-item active">
+        <a class="nav-link" routerLink="/signup">Signup</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+    <div class="row" style="padding-top: 20px;">
+      <div class="offset-md-4 col-md-4">
+        <form #loginForm="ngForm" method="post" (ngSubmit)="onSubmit($event)">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" [required]="true" name="name" minlength="1" [(ngModel)]="name" class="form-control"  id="exampleInputEmail1" aria-describedby="nameHelp"  #fullName="ngModel" >
+          </div>
+          <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)" class="alert alert-danger">Full Name is required</div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" [required]="true" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" [(ngModel)]="email" class="form-control" [className]="(1===11) ? 'form-control border-danger' : 'form-control'" id="exampleInputEmail1" aria-describedby="emailHelp" [email]="true" #emailId="ngModel" >
+          </div>
+          <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)" class="alert alert-danger">Entered email address is invalid</div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" [required]="true" name="password" [(ngModel)]="password" minlength="4" class="form-control" id="exampleInputPassword1" [(ngModel)]="password" #pass="ngModel">
+          </div>
+          <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="alert alert-danger">Password should contain atleast 4 characters</div>
+
+          <div class="form-group">
+            <label for="exampleInputRole">Role</label>
+            <select class="form-control" [(ngModel)]="role" name="role" required #roleSelected="ngModel">
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+          <div *ngIf="roleSelected.invalid && (roleSelected.dirty || roleSelected.touched)" class="alert alert-danger">Please select role</div>
+
+          <button type="submit" [disabled]="emailId.invalid || pass.invalid" class="btn btn-sm btn-primary">Submit</button>
+          <br><br>
+          <div *ngIf="errData && errData.length > 0">
+            <div *ngFor="let item of errData; index as i; trackBy: trackByFn" class="alert alert-danger" role="alert">
+              {{ item }}
+            </div>
+          </div>
+          <div *ngIf="success" class="alert alert-success">Account registered successfully, please login to continue</div>
+        </form>
+      </div>
+    </div>
+</div>

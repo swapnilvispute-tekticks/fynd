@@ -9,11 +9,11 @@ module.exports.main = async (req, res) => {
     if (!_.isEmpty(isExist)) {
       let bcrypt = require('bcryptjs')
       if (bcrypt.compareSync(reqBody.password, isExist.password)) {
-        let token = createJwtToken({ userId: isExist._id, role: isExist.role })
+        let token = createJwtToken({ userId: isExist._id, role: isExist.role, userName: isExist.name })
         let finalResult = { userId: isExist._id, email: isExist.email, name: isExist.name, role: isExist.role, token: token }
         return res.status(200).send({ status: 200, message: 'User loggedIn successfully', data: finalResult })
       } else {
-        return res.status(200).send({ status: 200, message: 'Invalid credentials entered', data: {} })
+        return res.status(200).send({ status: 400, message: 'Invalid credentials entered', data: {} })
       }
     } else {
       return res.status(200).send({ status: 400, message: 'User does not found with above email', data: {} })
