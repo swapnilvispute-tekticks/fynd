@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  reqUrl: `http://localhost:3000/api`
+  reqUrl: `https://safe-scrubland-13848.herokuapp.com/api`
 };
