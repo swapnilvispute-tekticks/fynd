@@ -32,9 +32,9 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/api', indexRouter)
+app.use('/', express.static(path.join(__dirname, 'public/frontend/dist/')))
 
-app.use('/', indexRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
@@ -47,7 +47,7 @@ mongoose.Promise = global.Promise
 // Connecting to the database
 mongoose.connect(dbConfig.url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) => {
-    console.log('result', result)
+    console.log('mongoose connected')
   })
   .catch(err => {
     console.log('Could not connect to the database. Exiting now...')
