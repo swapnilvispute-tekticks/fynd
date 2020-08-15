@@ -16,5 +16,5 @@ router.post('/user/login', require('../controllers/users/login').main)
 
 /* Genre */
 router.post('/genre/add', isAdmin, require('../controllers/movies/addGenre').main)
-router.get('/genre/list', isAdmin, require('../controllers/movies/listGenre').main)
+router.get('/genre/list', require('../controllers/movies/listGenre').main)
 module.exports = router
